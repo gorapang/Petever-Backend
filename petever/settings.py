@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     # 앱
     'accounts',
     'venues',
+    'tributes',
 ]
 
 MIDDLEWARE = [
