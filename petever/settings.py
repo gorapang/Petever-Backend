@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'accounts',
     'venues',
     'tributes',
+    'posts',
 ]
 
 MIDDLEWARE = [
