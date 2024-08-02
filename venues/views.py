@@ -1,3 +1,8 @@
 from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from .serializers import FuneralSerializer
+from .models import *
 
-# Create your views here.
+class FuneralViewSet(ModelViewSet):
+    queryset = Funeral.objects.all()
+    serializer_class = FuneralSerializer
