@@ -7,8 +7,8 @@ from .models import Memorial, GalleryImage, Footprint
 
 @admin.register(Memorial)
 class MemorialAdmin(admin.ModelAdmin):
-    list_display = ('title', 'birth_date', 'death_date', 'created_at')
-    search_fields = ('title', 'message')
+    list_display = ('memorial_name', 'birth_date', 'death_date', 'created_at')
+    search_fields = ('memorial_name', 'message')
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
