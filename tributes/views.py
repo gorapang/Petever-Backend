@@ -1,3 +1,10 @@
 from django.shortcuts import render
+from .serializers import MemorialSerializer
+from rest_framework.viewsets import ModelViewSet
+from . models import Memorial
 
-# Create your views here.
+class MemorialViewSet(ModelViewSet):
+    queryset = Memorial.objects.all()
+    serializer_class = MemorialSerializer
+
+
