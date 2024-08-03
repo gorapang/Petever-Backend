@@ -11,6 +11,8 @@ urlpatterns = [
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     #추모관
     path('tributes/', include('tributes.urls')),
+    #post
+    path('posts/', include('posts.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

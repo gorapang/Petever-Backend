@@ -1,4 +1,5 @@
 from django.db import models
+from accounts.models import User
     
 class Question(models.Model):
     content = models.TextField()
@@ -7,14 +8,14 @@ class Question(models.Model):
     def __str__(self):
         return self.content
 
-class User(models.Model):
-    username = models.TextField()
-    email = models.TextField()
-    password = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+# class User(models.Model):
+#     username = models.TextField()
+#     email = models.TextField()
+#     password = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.username
+#     def __str__(self):
+#         return self.username
        
 class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

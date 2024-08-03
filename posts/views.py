@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 # from rest_framework.permissions import IsAuthenticated
@@ -9,19 +10,28 @@ from itertools import chain
 from operator import attrgetter
 import datetime
 
-class QuestionDetailView(APIView):
-    def get(self, request, *args, **kwargs):
-        date_str = kwargs.get('date')
-        try:
-            # 문자열을 날짜 객체로 변환
-            date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-        except ValueError:
-            return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 해당 날짜의 Question을 조회
-        question = get_object_or_404(Question, date=date_obj)
-        serializer = QuestionSerializer(question)
-        return Response(serializer.data)
+class QuestionCreateView(generics.CreateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+class QuestionListView(generics.ListAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+# class QuestionDetailView(APIView):
+#     def get(self, request, *args, **kwargs):
+#         date_str = kwargs.get('date')
+#         try:
+#             # 문자열을 날짜 객체로 변환
+#             date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+#         except ValueError:
+#             return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
+
+#         # 해당 날짜의 Question을 조회
+#         question = get_object_or_404(Question, date=date_obj)
+#         serializer = QuestionSerializer(question)
+#         return Response(serializer.data)
 
 
 class LetterView(APIView):
@@ -71,6 +81,7 @@ class ListAllPostsView(APIView):
     # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
+
         answers = Answer.objects.all()
         letters = Letter.objects.all()
 
