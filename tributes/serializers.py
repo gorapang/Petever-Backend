@@ -22,10 +22,20 @@ class FootprintSerializer(serializers.ModelSerializer):
         footprint = Footprint.objects.create(memorial=memorial, **validated_data)
         return footprint
 
+class MemorialListSerializer(serializers.ModelSerializer):
+    user_name = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = Memorial
+        fields = [
+            'id', 'user_id', 'user_name', 'pet_name', 'main_image', 'birth_date', 'death_date', 'memorial_tagline'
+        ]
+
 class MemorialSerializer(serializers.ModelSerializer):
     gallery_images = GalleryImageSerializer(many=True, read_only=True)
     footprints = FootprintSerializer(many=True, read_only=True)
     user_id = serializers.IntegerField(write_only=True)
+    user_name = serializers.ReadOnlyField(source='user.username')
     new_gallery_images = serializers.ListField(
         child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
         write_only=True,
@@ -35,9 +45,9 @@ class MemorialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Memorial
         fields = [
-            'id', 'user_id', 'pet_name', 'birth_date', 'death_date', 
-            'memorial_name', 'memorial_tagline', 'main_image', 'message', 
-            'gallery_images', 'footprints', 'new_gallery_images', 'created_at'
+            'id', 'user_id', 'user_name', 'pet_name', 'birth_date', 'death_date', 'memorial_name', 
+            'memorial_tagline', 'main_image', 'message', 'gallery_images', 'footprints', 
+            'new_gallery_images', 'created_at'
         ]
 
     def create(self, validated_data):
@@ -46,7 +56,8 @@ class MemorialSerializer(serializers.ModelSerializer):
         new_gallery_images = validated_data.pop('new_gallery_images', [])
         memorial = Memorial.objects.create(user=user, **validated_data)
         for image in new_gallery_images:
-            GalleryImage.objects.create(image=image, memorials=memorial)
+            gallery_image = GalleryImage.objects.create(image=image)
+            memorial.gallery_images.add(gallery_image)
         return memorial
 
     def update(self, instance, validated_data):
@@ -56,5 +67,6 @@ class MemorialSerializer(serializers.ModelSerializer):
             instance.user = User.objects.get(id=user_id)
         instance = super().update(instance, validated_data)
         for image in new_gallery_images:
-            GalleryImage.objects.create(image=image, memorials=instance)
+            gallery_image = GalleryImage.objects.create(image=image)
+            instance.gallery_images.add(gallery_image)
         return instance
