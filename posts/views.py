@@ -27,21 +27,7 @@ class QuestionListView(generics.ListAPIView):
             raise QuestionSerializer.ValidationError({"error": "Invalid date format. Use YYYY-MM-DD."})
 
         return Question.objects.filter(date=date_obj)
-
-# class QuestionDetailView(APIView):
-#     def get(self, request, *args, **kwargs):
-#         date_str = kwargs.get('date')
-#         try:
-#             # 문자열을 날짜 객체로 변환
-#             date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-#         except ValueError:
-#             return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
-
-#         # 해당 날짜의 Question을 조회
-#         question = get_object_or_404(Question, date=date_obj)
-#         serializer = QuestionSerializer(question)
-#         return Response(serializer.data)
-
+    
 
 class LetterView(APIView):
     # permission_classes = [IsAuthenticated]
