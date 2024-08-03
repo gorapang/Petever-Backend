@@ -10,9 +10,17 @@ class GalleryImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FootprintSerializer(serializers.ModelSerializer):
+    memorial_id = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = Footprint
-        fields = '__all__'
+        fields = ['id', 'content', 'username', 'memorial_id', 'created_at']
+
+    def create(self, validated_data):
+        memorial_id = validated_data.pop('memorial_id')
+        memorial = Memorial.objects.get(id=memorial_id)
+        footprint = Footprint.objects.create(memorial=memorial, **validated_data)
+        return footprint
 
 class MemorialSerializer(serializers.ModelSerializer):
     gallery_images = GalleryImageSerializer(many=True, read_only=True)
