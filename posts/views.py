@@ -16,8 +16,17 @@ class QuestionCreateView(generics.CreateAPIView):
     serializer_class = QuestionSerializer
 
 class QuestionListView(generics.ListAPIView):
-    queryset = Question.objects.all()
+
     serializer_class = QuestionSerializer
+
+    def get_queryset(self):
+        date_str = self.kwargs.get('date')
+        try:
+            date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            raise QuestionSerializer.ValidationError({"error": "Invalid date format. Use YYYY-MM-DD."})
+
+        return Question.objects.filter(date=date_obj)
 
 # class QuestionDetailView(APIView):
 #     def get(self, request, *args, **kwargs):
