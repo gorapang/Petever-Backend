@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +54,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
+
+# CORS 설정
+# CORS_ALLOWED_ORIGINS = [
+#     "https://your-react-app.com",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'petever.urls'
 
@@ -86,7 +95,7 @@ WSGI_APPLICATION = 'petever.wsgi.application'
 #     }
 # }
 
-# 데이터베이스 디폴트 설정
+# 데이터베이스 설정
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
