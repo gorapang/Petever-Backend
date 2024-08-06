@@ -28,7 +28,7 @@ class MemorialListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Memorial
         fields = [
-            'id', 'user_id', 'user_name', 'pet_name', 'main_image', 'birth_date', 'death_date', 'memorial_tagline'
+            'id', 'memorial_name', 'user_id', 'user_name', 'pet_name', 'main_image', 'birth_date', 'death_date', 'memorial_tagline'
         ]
 
 class MemorialSerializer(serializers.ModelSerializer):
